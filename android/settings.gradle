@@ -1,0 +1,3 @@
+rootProject.name = 'IRHood'
+
+include ':app'
