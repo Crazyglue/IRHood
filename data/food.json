@@ -1,0 +1,34 @@
+{
+  "crepes": {
+    "flipTemp": 190,
+    "doneTemp": 200
+  },
+  "pancakes": {
+    "flipTemp": 190,
+    "doneTemp": 200
+  },
+  "bacon": {
+    "flipTemp": 190,
+    "doneTemp": 200
+  },
+  "eggs": {
+    "flipTemp": 190,
+    "doneTemp": 200
+  },
+  "pasta": {
+    "flipTemp": 190,
+    "doneTemp": 200
+  },
+  "rice": {
+    "flipTemp": 190,
+    "doneTemp": 200
+  },
+  "stirFry": {
+    "flipTemp": 190,
+    "doneTemp": 200
+  },
+  "portCutlet": {
+    "flipTemp": 190,
+    "doneTemp": 200
+  }
+}

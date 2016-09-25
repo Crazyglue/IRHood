@@ -11,6 +11,9 @@ import ReactNative, {
 } from 'react-native';
 const timer = require('react-native-timer');
 import Chart from 'react-native-chart';
+const camelCase = require('camelcase');
+import Food from '../data/food.json';
+import Button from 'apsl-react-native-button';
 
 export default class CookingStatus extends Component {
 
@@ -22,14 +25,31 @@ export default class CookingStatus extends Component {
       // this.fetchLatestData();
     }
 
+  // componentWillUpdate(nextProps, nextState) {
+  //   if(this.state.flipTemp < nextState.latestTemp)
+  //     this.setState({ needsFlip: true });
+      
+  //   if(this.state.doneTemp < nextState.latestTemp)
+  //     this.setState({done: true});
+  // }
+
   componentWillUnmount() {
     timer.clearInterval(this, "temperature");
-
   }
 
   constructor(props) {
     super(props);
-    this.state = { burnerData: [] };
+
+    var { flipTemp, doneTemp } = Food[camelCase(props.text)];
+
+    this.state = { 
+      burnerData: [],
+      flipTemp: flipTemp,
+      doneTemp: doneTemp,
+      flipped: false,
+      done: false,
+      latestTemp: 0
+    };
 
     timer.setInterval(this, "temperature", () => this.fetchLatestData(), 1000);
     
@@ -48,12 +68,13 @@ export default class CookingStatus extends Component {
           if(responseJson){
             burnerData = this.state.burnerData || [];
             data = {
-              temperature: responseJson.temperature  * Math.random()
+              temperature: responseJson.temperature * Math.random()
             }
             burnerData.push(data);
 
             this.setState({
-              burnerData: burnerData
+              burnerData: burnerData,
+              latestTemp: data.temperature
             });
           }
         })
@@ -63,16 +84,23 @@ export default class CookingStatus extends Component {
         .done();
   }
 
+  onFlipped() {
+    this.setState({
+      flipped: true
+    });
+  }
+
   render() {
     var latestTemperature = null;
     var temperatureText = '';
     var heatTemplate = 'Burner 3 is on and ';
     var stove = null;
     var chartData = [];
+    var headerText = "";     
 
     if(this.state.burnerData.length > 0) {
-      latestTemperature = this.state.burnerData[this.state.burnerData.length - 1].temperature;
-      temperatureIsWarm = latestTemperature > 50;
+      //latestTemperature = this.state.burnerData[this.state.burnerData.length - 1].temperature;
+      temperatureIsWarm = this.state.latestTemp > 50;
       temperatureText = heatTemplate + (temperatureIsWarm ? "warming up" : "HOT")
       stove = React.createElement(Image, {style: styles.image, source: require('../images/stovetop_hot.png')});
 
@@ -97,20 +125,27 @@ export default class CookingStatus extends Component {
         showXAxisLabels: false,
       });
     } else {
-      latestTemperature = 0;
+      //latestTemperature = 0;
       temperatureText = "";
       stove = React.createElement(Image, {style: styles.image, source: require('../images/stovetop_cold.png')});
       chart = null;
     }
 
+    if(this.state.flipped) {
+      headerText = "Your " + this.props.text + " will be done soon!";
+    } else {
+      headerText = this.state.latestTemp > this.state.flipTemp ? ("Flip your " + this.props.text + "!") : "What's cooking...";
+    }
+    var button = React.createElement(Button, { onPress: () => this.onFlipped() }, "Flipped!");
+
     return(
       <View style={styles.container}>
         <View>
           <Text style={styles.titleText}>
-            {"What's cooking..."}
+            {headerText}
           </Text>
           <Text style={styles.foodText}>
-            {this.props.text}
+            {this.state.flipped ? null : this.props.text}
           </Text>
         </View>
         <View>
@@ -120,12 +155,12 @@ export default class CookingStatus extends Component {
           {stove}
         </View>
         <View>
-          <Text>Current temp: {latestTemperature} °C</Text>
-          <Text>Temp to flip</Text>
-          <Text>Temp when done: </Text>
+          <Text>Current temp: {this.state.latestTemp} °C</Text>
+          <Text>Temp to flip: {this.state.flipTemp}</Text>
+          <Text>Temp when done: {this.state.doneTemp}</Text>
         </View>
-        <View>
-          {chart}
+        <View style={{ height: 175 }}>
+          { this.state.latestTemp > this.state.flipTemp && !this.state.flipped ? button : chart}
         </View>
         
       </View>
@@ -151,7 +186,7 @@ const styles = StyleSheet.create({
     alignSelf: "center"
   },
   foodText: {
-    fontSize: 20,
+    fontSize: 22,
     fontStyle: "italic",
     color: "#9E54A1",
   },
