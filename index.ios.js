@@ -72,41 +72,19 @@ class IRHood extends Component {
     console.log("%%%%%%%%%%%%%%%%%%%%%%%");
     var h = null;
     var burner_1 = null;
-    // var burner_2 = null;
-    // var burner_3 = null;
-    // var burner_4 = null;
-    // var burner_5 = null;
 
     if(this.state.burners) {
       burner_1 = this.state.burners[0].data[this.state.burners[0].data.length - 1].temperature;
-      // burner_2 = this.state.burners[1].data[this.state.burners[1].data.length - 1].temperature;
-      // burner_3 = this.state.burners[2].data[this.state.burners[2].data.length - 1].temperature;
-      // burner_4 = this.state.burners[3].data[this.state.burners[3].data.length - 1].temperature;
-      // burner_5 = this.state.burners[4].data[this.state.burners[4].data.length - 1].temperature;
     } else {
       h = 0;
       burner_1 = 0;
-      // burner_2 = 0;
-      // burner_3 = 0;
-      // burner_4 = 0;
-      // burner_5 = 0;
     }
 
 
     return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-         Cooking Hackathon!
-        </Text>
-        
-        <Range
-          burner_1={burner_1}
-          />
-
-        <Text style={styles.welcome}>
-          Last temperature received: { burner_1 }
-        </Text>
-      </View>
+      <Range
+        burner_1={burner_1}
+        />
     );
   }
 }
