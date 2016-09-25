@@ -164,7 +164,7 @@ export default class CookingStatus extends Component {
           <Text>Temp when done: {this.state.doneTemp}</Text>
         </View>
         <View style={{ height: 175, justifyContent: "space-around" }}>
-          { this.state.latestTemp > this.state.flipTemp && !this.state.flipped ? button : chart}
+          {chart}
         </View>
         
       </View>
