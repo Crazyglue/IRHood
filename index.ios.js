@@ -12,6 +12,7 @@ import {
 
 import Range from './components/range';
 import Home from './components/home';
+import CookingStatus from './components/cooking_status';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 class IRHood extends Component {
@@ -20,7 +21,12 @@ class IRHood extends Component {
     navigator.push({
       name: "Range"
     });
+  }
 
+  onStartBurners(navigator) {
+    navigator.push({
+      name: "Cooking Status"
+    });
   }
 
   onPressBack(navigator) {
@@ -34,18 +40,19 @@ class IRHood extends Component {
       <Image source={require("./images/fire_background.png")} style={styles.bgImage}>
       <Navigator
         initialRoute={{ title: 'My Initial Scene', index: 0 }}
+        configureScene={(route, routeStack) => Navigator.SceneConfigs.HorizontalSwipeJump}
         renderScene={(route, navigator) => {
-          if(route.name == "Choose Food"){
-            return (
-              <Range title={route.title} />
-            )
-          } else if(route.name == "Home") {
+          if(route.name == "Home") {
             return (
               <Home title={route.title} onPressContinue={this.onPressContinue.bind(this, navigator)} />
             )
           } else if (route.name == "Range") {
             return (
-              <Range onPressBack={this.onPressBack.bind(this, navigator)} />
+              <Range onPressBack={this.onPressBack.bind(this, navigator)} onStartBurners={this.onStartBurners.bind(this, navigator)} />
+            )
+          } else if (route.name == "Cooking Status") {
+            return (
+              <CookingStatus />
             )
           } else {
             return (
@@ -53,26 +60,6 @@ class IRHood extends Component {
             )
           }
         }}
-        navigationBar={
-          <Navigator.NavigationBar
-            routeMapper={{
-              LeftButton: (route, navigator, index, navState) =>
-                { 
-                  if(route.name != "Home") {
-                    
-                    return ( <Icon style={styles.navButton} name="chevron-left" onPress={navigator.pop} /> );
-                  } else {
-                    return (null);
-                  } 
-                },
-              RightButton: (route, navigator, index, navState) =>
-                { return (<Icon style={styles.navButton} name="chevron-right" />); },
-              Title: (route, navigator, index, navState) =>
-                { return (null); },
-            }}
-            style={{backgroundColor: '#F5FCFF'}}
-          />
-        }
       />
       </Image>
     );

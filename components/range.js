@@ -21,69 +21,32 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 
 
-class Range extends Component {
-  componentWillMount() {
-      this.fetchData();
-    }
-
-  componentWillUnmount() {
-    timer.clearInterval(this, "temperature");
-
-  }
-
+class Range extends Component {  
   constructor(props) {
     super(props);
 
-    this.state = {burners: this.fetchData()};
-
-    timer.setInterval(this, "temperature", () => this.fetchData, 1000);
-    
-  }
-    
-  fetchData() {
-    
-    fetch('http://localhost:3000/burners', {
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      method: 'get'
-    })
-      .then((response) => response.json())
-        .then((responseJson) => {          
-          console.log(responseJson[0]);
-          if(responseJson){
-            this.setState({
-              burners: responseJson
-            });
-          }
-        })
-        .catch((error) => {
-          console.error(error);
-        })
-        .done();
+    this.state = {
+      text: '', 
+      burnerSelected: false,
+    };
   }
 
-  onStartBurner() {
-    this.props.onStartBurner();
+  componentWillUpdate(nextProps, nextState) {
+    if(nextState.text && nextState.burnerSelected) {
+      this.props.onStartBurners();
+    }
   }
-  
+
+  onSelectBurner() {
+    console.log(this.state.burnerSelected);
+    this.setState({ burnerSelected: !this.state.burnerSelected });
+  }
 
   render() {
-    var h = null;
-    var burner_1 = null;
-
-    if(this.state.burners) {
-      burner_1 = this.state.burners[0].data[this.state.burners[0].data.length - 1].temperature;
-    } else {
-      h = 0;
-      burner_1 = 0;
-    }
-
     return(
       <View style={styles.container}>
         <View style={styles.subContainer} >  
-          <Text>What are you cooking?</Text>
+          <Text style={styles.titleText} >What are you cooking?</Text>
           <View style={styles.inlineSearch} >
             <TextInput
               style={styles.searchInput}
@@ -93,32 +56,33 @@ class Range extends Component {
             <Icon style={styles.searchIcon} name="search" />
           </View>
         </View>
-        <Text style={{ marginRight: 200, marginTop: 50, fontWeight: "bold"}} >Popular</Text>
+        <Text style={{ marginRight: 200, marginTop: 30, fontWeight: "bold"}} >Popular</Text>
         <View style={styles.optionsTable} >
           <View>
-            <Text>Breakfast</Text>
+            <Text style={{ fontWeight: "bold" }} >Breakfast</Text>
             <View style={styles.subTable} >
-              <Text>Crepes</Text>
-              <Text>Pancakes</Text>
-              <Text>Bacon</Text>
-              <Text>Eggs</Text>
+              <Text style={styles.popularText} onPress={() => this.setState({text: "Crepes"})}>Crepes</Text>
+              <Text style={styles.popularText} onPress={() => this.setState({text: "Pancakes"})}>Pancakes</Text>
+              <Text style={styles.popularText} onPress={() => this.setState({text: "Bacon"})}>Bacon</Text>
+              <Text style={styles.popularText} onPress={() => this.setState({text: "Eggs"})}>Eggs</Text>
             </View>
           </View>
           <View>
-            <Text>Dinner</Text>
+            <Text style={{ fontWeight: "bold" }}>Dinner</Text>
             <View style={styles.subTable} >
-              <Text>Pasta</Text>
-              <Text>Rice</Text>
-              <Text>Stir fry</Text>
-              <Text>Pork cutlet</Text>
+              <Text style={styles.popularText} onPress={() => this.setState({text: "Pasta"})}>Pasta</Text>
+              <Text style={styles.popularText} onPress={() => this.setState({text: "Rice"})}>Rice</Text>
+              <Text style={styles.popularText} onPress={() => this.setState({text: "Stir fry"})}>Stir fry</Text>
+              <Text style={styles.popularText} onPress={() => this.setState({text: "Pork cutlet"})}>Pork cutlet</Text>
             </View>
           </View>
         </View>
-        <Text>Select Burner</Text>
-        <Image source={require('../images/stovetop_off.png')} style={styles.stove} />
-        <ReactNative.Text style={styles.welcome}>
-          Last temperature received: { burner_1 }
-        </ReactNative.Text>
+        <TouchableHighlight onPress={this.onSelectBurner.bind(this)} >
+          <View style={{ marginBottom: 50 }} >
+            <Text style={styles.titleText} >Select Burner</Text>
+            <Image source={require('../images/stovetop_off.png')} style={styles.stove} />
+          </View>
+        </TouchableHighlight>
       </View>
       
     );
@@ -131,7 +95,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
-    marginTop: 100,
+    marginTop: 35,
     marginBottom: 35
   },
   welcome: {
@@ -139,59 +103,57 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     margin: 10,
   },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-  button: {
-    width: 200
-  },
-  nextButton: {
-    backgroundColor: "orange",
-    width: 90
-  },
   stove: {
     height: 200,
     width: 321.5,
     padding: 10
   },
   optionsTable: {
-    marginTop: 40,
+    marginTop: 20,
     flex: 1,
     justifyContent: 'space-around',
-    flexDirection: 'row'
+    flexDirection: 'row',
+    width: 300
   },
   searchInput: {
     height: 40,
-    width: 250,
-    borderColor: 'gray',
+    width: 200,
+    borderColor: 'black',
     borderWidth: 1,
-    backgroundColor: "white"
+    backgroundColor: "white",
+    borderRadius: 8,
   },
   inlineSearch: {
     flex: 1,
     flexDirection: 'row',
     borderWidth: 1,
     borderStyle: "solid",
-    borderTopRightRadius: 5,
-    borderBottomRightRadius: 5,
+    borderRadius: 8,
     backgroundColor: "#584FAE",
-    
   },
   searchIcon: {
-    marginRight: 5,
-    marginLeft: 5,
-    marginTop: 4,
-    marginBottom: 4,
-    fontSize: 32,
+    marginRight: 10,
+    marginLeft: 10,
+    marginTop: 9,
+    marginBottom: 9,
+    fontSize: 22,
+    color: "#FBF2DC"
 
   },
   subTable: {
-
+    justifyContent: "space-between"
   },
   subContainer: {
-    marginTop: 10
+    marginTop: 25
+  },
+  popularText: {
+    fontStyle: "italic"
+  },
+  titleText: {
+    fontSize: 22,
+    color: "#355821",
+    marginBottom: 10,
+    alignSelf: "center"
   }
 });
 

@@ -43,33 +43,24 @@ class Range extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    height: 400,
     flex: 1,
     justifyContent: 'center',
+    flexDirection: 'column',
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
+    marginTop: 35,
+    marginBottom: 35
   },
   logo: {
     marginTop: 100,
-    height: 450,
-    width: 350
+    height: 250,
+    width: 187
   },
   button: {
+    width: 250,
     backgroundColor: "purple",
-    marginBottom: 50,
-    marginLeft: 40,
-    marginRight: 40,
-    marginTop: 50
+    alignSelf: "center",
+    marginTop: 25,
   }
 });
 
