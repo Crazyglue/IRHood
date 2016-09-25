@@ -35,7 +35,6 @@ export default class DoneCooking extends Component {
           <Button style={styles.button} textStyle={{color: "white"}} onPress={this.props.CookAgain}>Again?</Button>
         </View>
         <View>
-          <TemperatureChart data={this.props.data} />
         </View>
         <View style={styles.centerView}>
           <Text style={styles.subText}>Share your #fIRe meal</Text>

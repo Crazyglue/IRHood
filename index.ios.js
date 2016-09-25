@@ -48,9 +48,9 @@ class IRHood extends Component {
       name: "Done Cooking"
     });
 
-    this.setState({
-      chartData: chartData
-    });
+    // this.setState({
+    //   chartData: chartData
+    // });
   }
 
   reset(navigator) {

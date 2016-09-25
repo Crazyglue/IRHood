@@ -21,16 +21,7 @@ export default class TemperatureChart extends Component {
 
     if (this.props.data)
       return(
-        <Chart
-          style={styles.chart}
-          data={this.props.data}
-          verticalGridStep={5} 
-          type="line" 
-          showDataPoint={true}
-          dataPointRadius= {1}
-          showGrid={false}
-          showXAxisLabels={false}
-          />
+        chart
       );
     else
       return(null);

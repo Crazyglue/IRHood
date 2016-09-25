@@ -38,6 +38,7 @@ export default class CookingStatus extends Component {
 
     this.state = { 
       burnerData: [],
+      chartData: [],
       flipTemp: flipTemp,
       doneTemp: doneTemp,
       flipped: false,
@@ -78,8 +79,8 @@ export default class CookingStatus extends Component {
           if(responseJson){
             burnerData = this.state.burnerData || [];
             data = {
-              temperature: responseJson.temperature * Math.random()
-            }
+              temperature: responseJson.temperature// * Math.random()
+            };
             burnerData.push(data);
 
             chartData = [];
@@ -95,7 +96,7 @@ export default class CookingStatus extends Component {
             this.setState({
               burnerData: burnerData,
               latestTemp: data.temperature,
-              chartData: chartData
+              chartData: chartData.slice(chartData.length - 20, -1)
             });
           }
         })
