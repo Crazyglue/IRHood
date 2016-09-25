@@ -19,9 +19,8 @@ export default class DoneCooking extends Component {
     super(props);
 
     this.state = {
+      data: []
     };
-
-    
   }
 
   shouldComponentUpdate(nextProps, nextState) {
