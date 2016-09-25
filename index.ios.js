@@ -6,7 +6,8 @@ import {
   StyleSheet,
   Text,
   View,
-  Image
+  Image,
+  Navigator
 } from 'react-native';
 
 import Range from './components/range';
@@ -14,11 +15,44 @@ import Home from './components/home';
 
 class IRHood extends Component {
   
+  onPressContinue(navigator) {
+    navigator.push({
+      name: "Range"
+    });
+
+  }
+
+  onPressBack(navigator) {
+    navigator.pop();
+  }
+
   render() {
     
 
     return (
-      <Home />
+      <Navigator
+        initialRoute={{ title: 'My Initial Scene', index: 0 }}
+        renderScene={(route, navigator) => {
+          if(route.name == "Choose Food"){
+            return (
+              <Range title={route.title} />
+            )
+          } else if(route.name == "Home") {
+            return (
+              <Home title={route.title} onPressContinue={this.onPressContinue.bind(this, navigator)} />
+            )
+          } else if (route.name == "Range") {
+            return (
+              <Range onPressBack={this.onPressBack.bind(this, navigator)} />
+            )
+          } else {
+            return (
+              <Home title={route.title} onPressContinue={this.onPressContinue.bind(this, navigator)} />
+            )
+          }
+        }}
+      />
+
     );
   }
 }

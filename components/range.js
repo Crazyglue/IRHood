@@ -14,20 +14,27 @@ import ReactNative, {
   TouchableHighlight,
   Image
 } from 'react-native';
+import Button from 'apsl-react-native-button';
+const timer = require('react-native-timer');
+
 
 class Range extends Component {
   componentWillMount() {
       this.fetchData();
     }
 
+  componentWillUnmount() {
+    timer.clearInterval(this, "temperature");
+
+  }
+
   constructor(props) {
     super(props);
 
     this.state = {burners: this.fetchData()};
 
-    setInterval(() => {
-      this.fetchData();
-    }, 1000);
+    timer.setInterval(this, "temperature", () => this.fetchData, 1000);
+    
   }
     
   fetchData() {
@@ -42,9 +49,11 @@ class Range extends Component {
       .then((response) => response.json())
         .then((responseJson) => {          
           console.log(responseJson[0]);
-          this.setState({
-            burners: responseJson
-          });
+          if(responseJson){
+            this.setState({
+              burners: responseJson
+            });
+          }
         })
         .catch((error) => {
           console.error(error);
@@ -70,7 +79,7 @@ class Range extends Component {
 
     return(
       <View style={styles.container}>
-        
+        <Button style={styles.button} onPress={this.props.onPressBack}>Back</Button>
         <Svg width="360" height="225">
           <Rect x="0" y="0" width="360" height="225" strokeWidth="2" fill="#777777"/>
         
@@ -168,6 +177,9 @@ const styles = StyleSheet.create({
     color: '#333333',
     marginBottom: 5,
   },
+  button: {
+    width: 200
+  }
 });
 
 module.exports = Range;

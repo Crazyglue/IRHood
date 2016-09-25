@@ -10,7 +10,7 @@ import ReactNative, {
   Text,
   Alert
 } from 'react-native';
-import Button from 'apsl-react-native-button'
+import Button from 'apsl-react-native-button';
 
 class Range extends Component {
   constructor(props) {
@@ -33,7 +33,7 @@ class Range extends Component {
           source={require("../images/fire.png")}
           style={styles.logo} 
           />
-        <Button style={styles.button} textStyle={{fontSize: 18, color: "white"}} onPress={this.onPressContinue}>Continue</Button>
+        <Button style={styles.button} textStyle={{fontSize: 18, color: "white"}} onPress={this.props.onPressContinue}>Continue</Button>
         
       </View>
       
