@@ -45,7 +45,24 @@ export default class CookingStatus extends Component {
       latestTemp: 0
     };
 
-    timer.setInterval(this, "temperature", () => this.fetchLatestData(), 1500);    
+    fetch('https://radiant-earth-90761.herokuapp.com/burners/1', {
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      method: 'PATCH',
+      body: JSON.stringify({
+        burner: {
+          target_temperature: doneTemp
+        }
+      })
+    })
+    .catch((error) => {
+      console.error(error);
+    })
+    .done();
+
+    timer.setInterval(this, "temperature", () => this.fetchLatestData(), 3000);    
   }
 
   fetchLatestData() {
