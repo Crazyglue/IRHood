@@ -5,17 +5,20 @@ import Svg,{
   Circle,
   G,
   Rect,
-  Text,
 } from 'react-native-svg';
 import ReactNative, {
   AppRegistry,
   StyleSheet,
   View,
   TouchableHighlight,
-  Image
+  Image,
+  TextInput,
+  Text
 } from 'react-native';
 import Button from 'apsl-react-native-button';
 const timer = require('react-native-timer');
+import Icon from 'react-native-vector-icons/FontAwesome';
+
 
 
 class Range extends Component {
@@ -79,78 +82,40 @@ class Range extends Component {
 
     return(
       <View style={styles.container}>
-        <Button style={styles.button} onPress={this.props.onPressBack}>Back</Button>
-        <Svg width="360" height="225">
-          <Rect x="0" y="0" width="360" height="225" strokeWidth="2" fill="#777777"/>
-        
-          <G>
-            <Circle
-              cx="59"
-              cy="166"
-              r="35"
-              stroke="blue"
-              strokeWidth="2"
-              fill="black"
+        <View style={styles.subContainer} >  
+          <Text>What are you cooking?</Text>
+          <View style={styles.inlineSearch} >
+            <TextInput
+              style={styles.searchInput}
+              onChangeText={(text) => this.setState({text})} 
+              value={this.state.text}
               />
-            <Text x="40" y="160" stroke="white">
-              {burner_1 + " F"}
-            </Text>
-          </G>
-          <G>
-            <Circle
-              cx="59"
-              cy="78"
-              r="35"
-              stroke="blue"
-              strokeWidth="2"
-              fill="black"
-              />
-            <Text x="40" y="70" stroke="white">
-              Burner 2
-            </Text>
-          </G>
-          <G>
-            <Circle
-              cx="294"
-              cy="71"
-              r="35"
-              stroke="blue"
-              strokeWidth="2"
-              fill="black"
-              />
-            <Text x="270" y="65" stroke="white">
-              Burner 3
-            </Text>
-          </G>
-          <G>
-            <Circle
-              cx="180"
-              cy="91"
-              r="55"
-              stroke="blue"
-              strokeWidth="2"
-              fill="black"
-              />
-            <Text x="165" y="85" stroke="white">
-              Temp
-            </Text>
-          </G>
-          <G>
-            <Circle
-              cx="294"
-              cy="166"
-              r="47.5"
-              stroke="blue"
-              strokeWidth="2"
-              fill="black"
-              />
-            <Text x="270" y="160" stroke="white">
-              Burner 5
-            </Text>
-          </G>
-          <Rect x="125" y="166" width="110" height="34" strokeWidth="2" fill="#D8D8D8"/>
-                    
-        </Svg>
+            <Icon style={styles.searchIcon} name="search" />
+          </View>
+        </View>
+        <Text style={{ marginRight: 200, marginTop: 50, fontWeight: "bold"}} >Popular</Text>
+        <View style={styles.optionsTable} >
+          <View>
+            <Text>Breakfast</Text>
+            <View style={styles.subTable} >
+              <Text>Crepes</Text>
+              <Text>Pancakes</Text>
+              <Text>Bacon</Text>
+              <Text>Eggs</Text>
+            </View>
+          </View>
+          <View>
+            <Text>Dinner</Text>
+            <View style={styles.subTable} >
+              <Text>Pasta</Text>
+              <Text>Rice</Text>
+              <Text>Stir fry</Text>
+              <Text>Pork cutlet</Text>
+            </View>
+          </View>
+        </View>
+        <Text>Select Burner</Text>
+        <Image source={require('../images/stovetop_off.png')} style={styles.stove} />
         <ReactNative.Text style={styles.welcome}>
           Last temperature received: { burner_1 }
         </ReactNative.Text>
@@ -166,6 +131,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
+    marginTop: 100,
+    marginBottom: 35
   },
   welcome: {
     fontSize: 20,
@@ -183,6 +150,48 @@ const styles = StyleSheet.create({
   nextButton: {
     backgroundColor: "orange",
     width: 90
+  },
+  stove: {
+    height: 200,
+    width: 321.5,
+    padding: 10
+  },
+  optionsTable: {
+    marginTop: 40,
+    flex: 1,
+    justifyContent: 'space-around',
+    flexDirection: 'row'
+  },
+  searchInput: {
+    height: 40,
+    width: 250,
+    borderColor: 'gray',
+    borderWidth: 1,
+    backgroundColor: "white"
+  },
+  inlineSearch: {
+    flex: 1,
+    flexDirection: 'row',
+    borderWidth: 1,
+    borderStyle: "solid",
+    borderTopRightRadius: 5,
+    borderBottomRightRadius: 5,
+    backgroundColor: "#584FAE",
+    
+  },
+  searchIcon: {
+    marginRight: 5,
+    marginLeft: 5,
+    marginTop: 4,
+    marginBottom: 4,
+    fontSize: 32,
+
+  },
+  subTable: {
+
+  },
+  subContainer: {
+    marginTop: 10
   }
 });
 

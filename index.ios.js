@@ -31,6 +31,7 @@ class IRHood extends Component {
     
 
     return (
+      <Image source={require("./images/fire_background.png")} style={styles.bgImage}>
       <Navigator
         initialRoute={{ title: 'My Initial Scene', index: 0 }}
         renderScene={(route, navigator) => {
@@ -56,15 +57,24 @@ class IRHood extends Component {
           <Navigator.NavigationBar
             routeMapper={{
               LeftButton: (route, navigator, index, navState) =>
-                { return (<Icon name="chevron-left" />); },
+                { 
+                  if(route.name != "Home") {
+                    
+                    return ( <Icon style={styles.navButton} name="chevron-left" onPress={navigator.pop} /> );
+                  } else {
+                    return (null);
+                  } 
+                },
               RightButton: (route, navigator, index, navState) =>
-                { return (<Icon name="chevron-right" />); }
+                { return (<Icon style={styles.navButton} name="chevron-right" />); },
+              Title: (route, navigator, index, navState) =>
+                { return (null); },
             }}
             style={{backgroundColor: '#F5FCFF'}}
           />
-  }
+        }
       />
-
+      </Image>
     );
   }
 }
@@ -86,6 +96,19 @@ const styles = StyleSheet.create({
     color: '#333333',
     marginBottom: 5,
   },
+  navButton: {
+    fontSize: 28,
+    margin: 10
+  },
+  bgImageWrapper: {
+    position: 'absolute',
+    top: 0, bottom: 0, left: 0, right: 0
+  },
+  bgImage: {
+    flex: 1,
+    width: null,
+    height: null
+  }
 });
 
 AppRegistry.registerComponent('IRHood', () => IRHood);
