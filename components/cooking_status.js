@@ -66,7 +66,7 @@ export default class CookingStatus extends Component {
   }
 
   fetchLatestData() {
-    fetch('http://localhost:3000/burners/1/latest', {
+    fetch('https://radiant-earth-90761.herokuapp.com/burners/1/latest', {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
