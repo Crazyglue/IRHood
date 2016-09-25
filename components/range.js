@@ -19,8 +19,6 @@ import Button from 'apsl-react-native-button';
 const timer = require('react-native-timer');
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-
-
 class Range extends Component {  
   constructor(props) {
     super(props);
@@ -33,7 +31,7 @@ class Range extends Component {
 
   componentWillUpdate(nextProps, nextState) {
     if(nextState.text && nextState.burnerSelected) {
-      this.props.onStartBurners(this.state.text);
+      this.props.onStartBurners(nextState.text);
     }
   }
 

@@ -21,14 +21,10 @@ export default class CookingStatus extends Component {
   onStartBurner() {
     this.props.onStartBurner();
   }
-  
-  componentWillMount() {
-      // this.fetchLatestData();
-    }
 
   componentWillUpdate(nextProps, nextState) {
-    if(this.state.flipped && this.state.latestTemp > this.state.doneTemp)
-      this.props.onCookingDone(this.state.chartData);
+    if(this.state.flipped && this.state.latestTemp > this.state.doneTemp && !this.state.done)
+      this.props.onCookingDone(nextState.chartData);
   }
 
   componentWillUnmount() {
@@ -49,8 +45,7 @@ export default class CookingStatus extends Component {
       latestTemp: 0
     };
 
-    timer.setInterval(this, "temperature", () => this.fetchLatestData(), 1000);
-    
+    timer.setInterval(this, "temperature", () => this.fetchLatestData(), 1500);    
   }
 
   fetchLatestData() {
@@ -113,6 +108,8 @@ export default class CookingStatus extends Component {
       if (this.state.chartData.length > 0)
         chart = React.createElement(TemperatureChart, {
           data: this.state.chartData,
+          flipTemp: this.state.flipTemp,
+          doneTemp: this.state.doneTemp,
         });
     } else {
       temperatureText = "";
@@ -125,7 +122,7 @@ export default class CookingStatus extends Component {
     } else {
       headerText = this.state.latestTemp > this.state.flipTemp ? ("Flip your " + this.props.text + "!") : "What's cooking...";
     }
-    var button = React.createElement(Button, { onPress: () => this.onFlipped() }, "Flipped!");
+    var button = React.createElement(Button, { style: styles.flipButton, onPress: () => this.onFlipped() }, "Flipped!");
 
     return(
       <View style={styles.container}>
@@ -148,7 +145,7 @@ export default class CookingStatus extends Component {
           <Text>Temp to flip: {this.state.flipTemp}</Text>
           <Text>Temp when done: {this.state.doneTemp}</Text>
         </View>
-        <View style={{ height: 175 }}>
+        <View style={{ height: 175, justifyContent: "space-around" }}>
           { this.state.latestTemp > this.state.flipTemp && !this.state.flipped ? button : chart}
         </View>
         
@@ -185,4 +182,7 @@ const styles = StyleSheet.create({
     padding: 10,
     marginTop: 10
   },
+  flipButton: {
+    alignSelf: "center"
+  }
 });

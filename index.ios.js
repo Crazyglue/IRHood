@@ -53,9 +53,12 @@ class IRHood extends Component {
     });
   }
 
-  render() {
-    
+  reset(navigator) {
+    navigator.pop();
+    navigator.pop();
+  }
 
+  render() {
     return (
       <Image source={require("./images/fire_background.png")} style={styles.bgImage}>
       <Navigator
@@ -76,7 +79,7 @@ class IRHood extends Component {
             )
           } else if (route.name == "Done Cooking") {
             return (
-              <DoneCooking data={this.state.chartData} />
+              <DoneCooking data={this.state.chartData} cookAgain={this.reset.bind(this, navigator)} />
             )
           } else {
             return (

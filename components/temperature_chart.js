@@ -7,7 +7,6 @@ import ReactNative, {
 import Chart from 'react-native-chart';
 
 export default class TemperatureChart extends Component {
-
   render() {
     chart = React.createElement(Chart, {
         style: styles.chart, 
@@ -20,20 +19,22 @@ export default class TemperatureChart extends Component {
         showXAxisLabels: false,
       });
 
-    return(
-      <Chart
-        style={styles.chart}
-        data={this.props.data}
-        verticalGridStep={5} 
-        type="line" 
-        showDataPoint={true}
-        dataPointRadius= {1}
-        showGrid={false}
-        showXAxisLabels={false}
-        />
-    );
+    if (this.props.data)
+      return(
+        <Chart
+          style={styles.chart}
+          data={this.props.data}
+          verticalGridStep={5} 
+          type="line" 
+          showDataPoint={true}
+          dataPointRadius= {1}
+          showGrid={false}
+          showXAxisLabels={false}
+          />
+      );
+    else
+      return(null);
   }
-
 }
 
 const styles = StyleSheet.create({
