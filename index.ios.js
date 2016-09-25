@@ -16,6 +16,13 @@ import CookingStatus from './components/cooking_status';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 class IRHood extends Component {
+  constructor(props){
+    super(props);
+
+    this.state = {
+      text: ''
+    };
+  }
   
   onPressContinue(navigator) {
     navigator.push({
@@ -23,7 +30,8 @@ class IRHood extends Component {
     });
   }
 
-  onStartBurners(navigator) {
+  onStartBurners(navigator, text) {
+    this.setState({text: text});
     navigator.push({
       name: "Cooking Status"
     });
@@ -52,7 +60,7 @@ class IRHood extends Component {
             )
           } else if (route.name == "Cooking Status") {
             return (
-              <CookingStatus />
+              <CookingStatus text={this.state.text} />
             )
           } else {
             return (

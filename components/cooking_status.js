@@ -1,3 +1,5 @@
+/*jshint esversion: 6 */
+
 import React, { Component } from 'react';
 import ReactNative, {
   StyleSheet,
@@ -5,9 +7,10 @@ import ReactNative, {
   TouchableHighlight,
   Image,
   TextInput,
-  Text
+  Text,
 } from 'react-native';
 const timer = require('react-native-timer');
+import Chart from 'react-native-chart';
 
 export default class CookingStatus extends Component {
 
@@ -16,7 +19,7 @@ export default class CookingStatus extends Component {
   }
   
   componentWillMount() {
-      this.fetchData();
+      // this.fetchLatestData();
     }
 
   componentWillUnmount() {
@@ -26,16 +29,14 @@ export default class CookingStatus extends Component {
 
   constructor(props) {
     super(props);
+    this.state = { burnerData: [] };
 
-    this.state = {burners: this.fetchData()};
-
-    timer.setInterval(this, "temperature", () => this.fetchData, 1000);
+    timer.setInterval(this, "temperature", () => this.fetchLatestData(), 1000);
     
   }
-    
-  fetchData() {
-    
-    fetch('http://localhost:3000/burners', {
+
+  fetchLatestData() {
+    fetch('http://localhost:3000/burners/1/latest', {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
@@ -44,10 +45,15 @@ export default class CookingStatus extends Component {
     })
       .then((response) => response.json())
         .then((responseJson) => {          
-          console.log(responseJson[0]);
           if(responseJson){
+            burnerData = this.state.burnerData || [];
+            data = {
+              temperature: responseJson.temperature  * Math.random()
+            }
+            burnerData.push(data);
+
             this.setState({
-              burners: responseJson
+              burnerData: burnerData
             });
           }
         })
@@ -58,42 +64,105 @@ export default class CookingStatus extends Component {
   }
 
   render() {
-    var h = null;
-    var burner_1 = null;
+    var latestTemperature = null;
+    var temperatureText = '';
+    var heatTemplate = 'Burner 3 is on and ';
+    var stove = null;
+    var chartData = [];
 
-    if(this.state.burners) {
-      burner_1 = this.state.burners[0].data[this.state.burners[0].data.length - 1].temperature;
+    if(this.state.burnerData.length > 0) {
+      latestTemperature = this.state.burnerData[this.state.burnerData.length - 1].temperature;
+      temperatureIsWarm = latestTemperature > 50;
+      temperatureText = heatTemplate + (temperatureIsWarm ? "warming up" : "HOT")
+      stove = React.createElement(Image, {style: styles.image, source: require('../images/stovetop_hot.png')});
+
+      chartData = []
+      for (var index = 0; index < this.state.burnerData.length; index++) {
+        chartData.push(
+          [
+            index,            
+            this.state.burnerData[index].temperature
+          ]
+        );
+      }
+
+      chart = React.createElement(Chart, {
+        style: styles.chart, 
+        data: chartData,
+        verticalGridStep: 5, 
+        type: "line", 
+        showDataPoint: true,
+        dataPointRadius: 1,
+        showGrid: false,
+        showXAxisLabels: false,
+      });
     } else {
-      h = 0;
-      burner_1 = 0;
+      latestTemperature = 0;
+      temperatureText = "";
+      stove = React.createElement(Image, {style: styles.image, source: require('../images/stovetop_cold.png')});
+      chart = null;
     }
 
     return(
-      <ReactNative.Text style={styles.welcome}>
-        Last temperature received: { burner_1 }
-      </ReactNative.Text>
+      <View style={styles.container}>
+        <View>
+          <Text style={styles.titleText}>
+            {"What's cooking..."}
+          </Text>
+          <Text style={styles.foodText}>
+            {this.props.text}
+          </Text>
+        </View>
+        <View>
+          <Text>
+            {temperatureText}
+          </Text>
+          {stove}
+        </View>
+        <View>
+          <Text>Current temp: {latestTemperature} °C</Text>
+          <Text>Temp to flip</Text>
+          <Text>Temp when done: </Text>
+        </View>
+        <View>
+          {chart}
+        </View>
+        
+      </View>
     );
   }
 }
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    flexDirection: 'column',
+    justifyContent: 'space-around',
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
     marginTop: 35,
     marginBottom: 35
   },
-  logo: {
-    marginTop: 100,
-    height: 250,
-    width: 187
+  welcome: {
+    marginTop: 50
   },
-  button: {
-    width: 250,
-    backgroundColor: "purple",
-    alignSelf: "center",
-    marginTop: 25,
+  titleText: {
+    fontSize: 22,
+    color: "#355821",
+    marginBottom: 10,
+    alignSelf: "center"
+  },
+  foodText: {
+    fontSize: 20,
+    fontStyle: "italic",
+    color: "#9E54A1",
+  },
+  image: {
+    height: 200,
+    width: 321.5,
+    padding: 10,
+    marginTop: 10
+  },
+  chart: {
+    width: 350,
+    height: 175,
   }
 });

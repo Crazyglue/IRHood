@@ -33,8 +33,14 @@ class Range extends Component {
 
   componentWillUpdate(nextProps, nextState) {
     if(nextState.text && nextState.burnerSelected) {
-      this.props.onStartBurners();
+      this.props.onStartBurners(this.state.text);
     }
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    if(nextState.text != this.state.text || nextState.burnerSelected != this.state.burnerSelected)
+      return true;
+    return false;
   }
 
   onSelectBurner() {
