@@ -61,8 +61,8 @@ class Range extends Component {
         .done();
   }
 
-  onPressButton() {
-
+  onStartBurner() {
+    this.props.onStartBurner();
   }
   
 
@@ -179,6 +179,10 @@ const styles = StyleSheet.create({
   },
   button: {
     width: 200
+  },
+  nextButton: {
+    backgroundColor: "orange",
+    width: 90
   }
 });
 

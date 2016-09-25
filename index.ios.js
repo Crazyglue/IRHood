@@ -12,6 +12,7 @@ import {
 
 import Range from './components/range';
 import Home from './components/home';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 class IRHood extends Component {
   
@@ -51,6 +52,17 @@ class IRHood extends Component {
             )
           }
         }}
+        navigationBar={
+          <Navigator.NavigationBar
+            routeMapper={{
+              LeftButton: (route, navigator, index, navState) =>
+                { return (<Icon name="chevron-left" />); },
+              RightButton: (route, navigator, index, navState) =>
+                { return (<Icon name="chevron-right" />); }
+            }}
+            style={{backgroundColor: '#F5FCFF'}}
+          />
+  }
       />
 
     );
