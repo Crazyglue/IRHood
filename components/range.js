@@ -3,49 +3,73 @@
 import React, { Component } from 'react';
 import Svg,{
   Circle,
-  Ellipse,
   G,
-  LinearGradient,
-  RadialGradient,
-  Line,
-  Path,
-  Polygon,
-  Polyline,
   Rect,
-  Symbol,
   Text,
-  Use,
-  Defs,
-  Stop
 } from 'react-native-svg';
 import ReactNative, {
   AppRegistry,
   StyleSheet,
   View,
+  TouchableHighlight,
   Image
 } from 'react-native';
 
 class Range extends Component {
+  componentWillMount() {
+      this.fetchData();
+    }
+
   constructor(props) {
     super(props);
-    
-    // console.log("~~~~~~~~~~~~");
-    // console.log(props.burnerData);
 
-    this.setState = {
-      burnerData: props.burnerData
-    }; 
+    this.state = {burners: this.fetchData()};
+
+    setInterval(() => {
+      this.fetchData();
+    }, 1000);
+  }
+    
+  fetchData() {
+    
+    fetch('http://localhost:3000/burners', {
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      method: 'get'
+    })
+      .then((response) => response.json())
+        .then((responseJson) => {          
+          console.log(responseJson[0]);
+          this.setState({
+            burners: responseJson
+          });
+        })
+        .catch((error) => {
+          console.error(error);
+        })
+        .done();
   }
 
+  onPressButton() {
+
+  }
+  
+
   render() {
-    // console.log("RENDERING SVG...");
-    // console.log(this.props.burnerData);
-    let burner_1 = this.props.burner_1;
+    var h = null;
+    var burner_1 = null;
+
+    if(this.state.burners) {
+      burner_1 = this.state.burners[0].data[this.state.burners[0].data.length - 1].temperature;
+    } else {
+      h = 0;
+      burner_1 = 0;
+    }
+
     return(
       <View style={styles.container}>
-        <Text style={styles.welcome}>
-         Cooking Hackathon!
-        </Text>
         
         <Svg width="360" height="225">
           <Rect x="0" y="0" width="360" height="225" strokeWidth="2" fill="#777777"/>
