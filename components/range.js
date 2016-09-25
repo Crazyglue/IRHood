@@ -42,7 +42,6 @@ class Range extends Component {
   }
 
   onSelectBurner() {
-    console.log(this.state.burnerSelected);
     this.setState({ burnerSelected: !this.state.burnerSelected });
   }
 
@@ -65,19 +64,19 @@ class Range extends Component {
           <View>
             <Text style={{ fontWeight: "bold" }} >Breakfast</Text>
             <View style={styles.subTable} >
-              <Text style={styles.popularText} onPress={() => this.setState({text: "Crepes"})}>Crepes</Text>
-              <Text style={styles.popularText} onPress={() => this.setState({text: "Pancakes"})}>Pancakes</Text>
-              <Text style={styles.popularText} onPress={() => this.setState({text: "Bacon"})}>Bacon</Text>
-              <Text style={styles.popularText} onPress={() => this.setState({text: "Eggs"})}>Eggs</Text>
+              <Text style={[styles.popularText, (this.state.text == "Crepes" ? styles.highlight : null)]} onPress={() => this.setState({text: "Crepes"})}>Crepes</Text>
+              <Text style={[styles.popularText, (this.state.text == "Pancakes" ? styles.highlight : null)]} onPress={() => this.setState({text: "Pancakes"})}>Pancakes</Text>
+              <Text style={[styles.popularText, (this.state.text == "Bacon" ? styles.highlight : null)]} onPress={() => this.setState({text: "Bacon"})}>Bacon</Text>
+              <Text style={[styles.popularText, (this.state.text == "Eggs" ? styles.highlight : null)]} onPress={() => this.setState({text: "Eggs"})}>Eggs</Text>
             </View>
           </View>
           <View>
             <Text style={{ fontWeight: "bold" }}>Dinner</Text>
             <View style={styles.subTable} >
-              <Text style={styles.popularText} onPress={() => this.setState({text: "Pasta"})}>Pasta</Text>
-              <Text style={styles.popularText} onPress={() => this.setState({text: "Rice"})}>Rice</Text>
-              <Text style={styles.popularText} onPress={() => this.setState({text: "Stir fry"})}>Stir fry</Text>
-              <Text style={styles.popularText} onPress={() => this.setState({text: "Pork cutlet"})}>Pork cutlet</Text>
+              <Text style={[styles.popularText, (this.state.text == "Pasta" ? styles.highlight : null)]} onPress={() => this.setState({text: "Pasta"})}>Pasta</Text>
+              <Text style={[styles.popularText, (this.state.text == "Rice" ? styles.highlight : null)]} onPress={() => this.setState({text: "Rice"})}>Rice</Text>
+              <Text style={[styles.popularText, (this.state.text == "Stir fry" ? styles.highlight : null)]} onPress={() => this.setState({text: "Stir fry"})}>Stir fry</Text>
+              <Text style={[styles.popularText, (this.state.text == "Pork cutlet" ? styles.highlight : null)]} onPress={() => this.setState({text: "Pork cutlet"})}>Pork cutlet</Text>
             </View>
           </View>
         </View>
@@ -158,6 +157,10 @@ const styles = StyleSheet.create({
     color: "#355821",
     marginBottom: 10,
     alignSelf: "center"
+  },
+  highlight: {
+    backgroundColor: "#777777",
+
   }
 });
 
