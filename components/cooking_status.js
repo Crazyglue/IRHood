@@ -14,6 +14,7 @@ import Chart from 'react-native-chart';
 const camelCase = require('camelcase');
 import Food from '../data/food.json';
 import Button from 'apsl-react-native-button';
+import TemperatureChart from './temperature_chart';
 
 export default class CookingStatus extends Component {
 
@@ -25,13 +26,10 @@ export default class CookingStatus extends Component {
       // this.fetchLatestData();
     }
 
-  // componentWillUpdate(nextProps, nextState) {
-  //   if(this.state.flipTemp < nextState.latestTemp)
-  //     this.setState({ needsFlip: true });
-      
-  //   if(this.state.doneTemp < nextState.latestTemp)
-  //     this.setState({done: true});
-  // }
+  componentWillUpdate(nextProps, nextState) {
+    if(this.state.flipped && this.state.latestTemp > this.state.doneTemp)
+      this.props.onCookingDone(this.state.chartData);
+  }
 
   componentWillUnmount() {
     timer.clearInterval(this, "temperature");
@@ -72,9 +70,20 @@ export default class CookingStatus extends Component {
             }
             burnerData.push(data);
 
+            chartData = [];
+            for (var index = 0; index < burnerData.length; index++) {
+              chartData.push(
+                [
+                  index,            
+                  burnerData[index].temperature
+                ]
+              );
+            }
+
             this.setState({
               burnerData: burnerData,
-              latestTemp: data.temperature
+              latestTemp: data.temperature,
+              chartData: chartData
             });
           }
         })
@@ -91,41 +100,21 @@ export default class CookingStatus extends Component {
   }
 
   render() {
-    var latestTemperature = null;
     var temperatureText = '';
     var heatTemplate = 'Burner 3 is on and ';
     var stove = null;
-    var chartData = [];
     var headerText = "";     
 
     if(this.state.burnerData.length > 0) {
-      //latestTemperature = this.state.burnerData[this.state.burnerData.length - 1].temperature;
       temperatureIsWarm = this.state.latestTemp > 50;
       temperatureText = heatTemplate + (temperatureIsWarm ? "warming up" : "HOT")
       stove = React.createElement(Image, {style: styles.image, source: require('../images/stovetop_hot.png')});
 
-      chartData = []
-      for (var index = 0; index < this.state.burnerData.length; index++) {
-        chartData.push(
-          [
-            index,            
-            this.state.burnerData[index].temperature
-          ]
-        );
-      }
-
-      chart = React.createElement(Chart, {
-        style: styles.chart, 
-        data: chartData,
-        verticalGridStep: 5, 
-        type: "line", 
-        showDataPoint: true,
-        dataPointRadius: 1,
-        showGrid: false,
-        showXAxisLabels: false,
-      });
+      if (this.state.chartData.length > 0)
+        chart = React.createElement(TemperatureChart, {
+          data: this.state.chartData,
+        });
     } else {
-      //latestTemperature = 0;
       temperatureText = "";
       stove = React.createElement(Image, {style: styles.image, source: require('../images/stovetop_cold.png')});
       chart = null;
@@ -196,8 +185,4 @@ const styles = StyleSheet.create({
     padding: 10,
     marginTop: 10
   },
-  chart: {
-    width: 350,
-    height: 175,
-  }
 });

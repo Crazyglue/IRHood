@@ -12,6 +12,7 @@ import {
 
 import Range from './components/range';
 import Home from './components/home';
+import DoneCooking from './components/done_cooking';
 import CookingStatus from './components/cooking_status';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -20,7 +21,8 @@ class IRHood extends Component {
     super(props);
 
     this.state = {
-      text: ''
+      text: '',
+      chartData: null
     };
   }
   
@@ -39,6 +41,16 @@ class IRHood extends Component {
 
   onPressBack(navigator) {
     navigator.pop();
+  }
+
+  onCookingDone(navigator, chartData) {
+    navigator.push({
+      name: "Done Cooking"
+    });
+
+    this.setState({
+      chartData: chartData
+    });
   }
 
   render() {
@@ -60,7 +72,11 @@ class IRHood extends Component {
             )
           } else if (route.name == "Cooking Status") {
             return (
-              <CookingStatus text={this.state.text} />
+              <CookingStatus text={this.state.text} onCookingDone={this.onCookingDone.bind(this, navigator)} />
+            )
+          } else if (route.name == "Done Cooking") {
+            return (
+              <DoneCooking data={this.state.chartData} />
             )
           } else {
             return (
