@@ -83,7 +83,7 @@ class Range extends Component {
         <TouchableHighlight onPress={this.onSelectBurner.bind(this)} >
           <View style={{ marginBottom: 50 }} >
             <Text style={styles.titleText} >Select Burner</Text>
-            <Image source={require('../images/stovetop_off.png')} style={styles.stove} />
+            <Image source={this.state.burnerSelected ? require('../images/stovetop_cold.png') : require('../images/stovetop_off.png')} style={styles.stove} />
           </View>
         </TouchableHighlight>
       </View>

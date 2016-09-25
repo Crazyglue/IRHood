@@ -1,34 +1,34 @@
 {
   "crepes": {
-    "flipTemp": 190,
-    "doneTemp": 200
+    "flipTemp": 120,
+    "doneTemp": 130
   },
   "pancakes": {
-    "flipTemp": 190,
-    "doneTemp": 200
+    "flipTemp": 170,
+    "doneTemp": 199
   },
   "bacon": {
-    "flipTemp": 190,
-    "doneTemp": 200
+    "flipTemp": 123,
+    "doneTemp": 176
   },
   "eggs": {
-    "flipTemp": 190,
-    "doneTemp": 200
+    "flipTemp": 144,
+    "doneTemp": 166
   },
   "pasta": {
-    "flipTemp": 190,
-    "doneTemp": 200
+    "flipTemp": 133,
+    "doneTemp": 314
   },
   "rice": {
     "flipTemp": 190,
-    "doneTemp": 200
+    "doneTemp": 334
   },
   "stirFry": {
     "flipTemp": 190,
-    "doneTemp": 200
+    "doneTemp": 211
   },
   "portCutlet": {
-    "flipTemp": 190,
-    "doneTemp": 200
+    "flipTemp": 150,
+    "doneTemp": 188
   }
 }
